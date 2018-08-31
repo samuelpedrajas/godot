@@ -1091,8 +1091,8 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 		String boot_logo_path = GLOBAL_DEF("application/boot_splash/image", String());
 		ProjectSettings::get_singleton()->set_custom_property_info("application/boot_splash/image", PropertyInfo(Variant::STRING, "application/boot_splash/image", PROPERTY_HINT_FILE, "*.png"));
 
-		const String boot_logo_scale = GLOBAL_DEF("application/boot_splash/scale", "disabled");
-		ProjectSettings::get_singleton()->set_custom_property_info("application/boot_splash/scale", PropertyInfo(Variant::STRING, "application/boot_splash/scale", PROPERTY_HINT_ENUM, "disabled,keep_width,keep_height,cover,expand,full_size"));
+		const String boot_logo_expand_mode = GLOBAL_DEF("application/boot_splash/expand_mode", "disabled");
+		ProjectSettings::get_singleton()->set_custom_property_info("application/boot_splash/expand_mode", PropertyInfo(Variant::STRING, "application/boot_splash/expand_mode", PROPERTY_HINT_ENUM, "disabled,keep_width,keep_height,cover,expand,keep"));
 
 		Ref<Image> boot_logo;
 
@@ -1109,7 +1109,14 @@ Error Main::setup2(Thread::ID p_main_tid_override) {
 		if (boot_logo.is_valid()) {
 			OS::get_singleton()->_msec_splash = OS::get_singleton()->get_ticks_msec();
 			Color boot_bg = GLOBAL_DEF("application/boot_splash/bg_color", clear);
-			VisualServer::get_singleton()->set_boot_image(boot_logo, boot_bg, boot_logo_scale);
+
+			// use fullsize property to keep compatibility
+			bool expand_boot_logo = GLOBAL_DEF("application/boot_splash/fullsize", true);
+			if (expand_boot_logo) {
+				VisualServer::get_singleton()->set_boot_image(boot_logo, boot_bg, boot_logo_expand_mode);
+			} else {
+				VisualServer::get_singleton()->set_boot_image(boot_logo, boot_bg, "disabled");
+			}
 
 #ifndef TOOLS_ENABLED
 //no tools, so free the boot logo (no longer needed)

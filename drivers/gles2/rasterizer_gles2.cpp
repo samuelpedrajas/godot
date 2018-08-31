@@ -350,7 +350,7 @@ void RasterizerGLES2::set_boot_image(const Ref<Image> &p_image, const Color &p_c
 	} else if (p_scale == "expand") {
 		screenrect.size.x = window_w;
 		screenrect.size.y = window_h;
-	} else if (p_scale == "full_size") {
+	} else if (p_scale == "keep") {
 		if (window_w > window_h) {
 			//scale horizontally
 			screenrect.size.y = window_h;

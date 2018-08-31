@@ -157,8 +157,11 @@
 		</method>
 	</methods>
 	<members>
-		<member name="application/boot_splash/scale" type="String" setter="" getter="">
-			Scale the boot splash image using the selected mode (will leave it as default pixel size if disabled).
+		<member name="application/boot_splash/fullsize" type="bool" setter="" getter="">
+			Scale the boot splash image applying the selected expand mode (will leave it as default pixel size if disabled).
+		</member>
+		<member name="application/boot_splash/expand_mode" type="String" setter="" getter="">
+			Scale the boot splash image using the selected expand mode (will leave it as default pixel size either if disabled). This property only takes effect when fullsize is true.
 		</member>
 		<member name="application/boot_splash/image" type="String" setter="" getter="">
 			Path to an image used for boot splash.
